@@ -77,7 +77,7 @@ class Attributes extends React.Component {
 
     return (
       <div>
-        <ListItem button onClick={this.handleToggle}>
+        <ListItem button onClick={this.handleToggle} divider={keys.length === 1}>
           <ListItemText
             primary={
               <div className={classes.subAttributesLabel} style={{ paddingLeft: (keys.length - 1) * (theme.spacing.unit * 2) }}>

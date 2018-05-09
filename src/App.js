@@ -81,7 +81,6 @@ class App extends Component {
 
     const generatedThemeObject = cleanObject(overwrite);
     const generatedTheme = Object.keys(generatedThemeObject).length > 0 ? stringifyObject(generatedThemeObject, {
-      indent: '  ',
       singleQuotes: false
     }) : null;
     
@@ -90,8 +89,8 @@ class App extends Component {
     return (
       <div>
         <CssBaseline />
-        <MuiThemeProvider theme={theme}>
-          <Layout topbar={topbar} sidebar={sidebar}>
+        <MuiThemeProvider theme={defaultTheme}>
+          <Layout theme={theme} topbar={topbar} sidebar={sidebar}>
             <Content />
           </Layout>
           <GenerateDialog

@@ -25,7 +25,7 @@ class Topbar extends React.Component {
       <AppBar position="static">
         <Toolbar>
           <Typography variant="title" color="inherit" className={classes.flex}>
-            New Material UI Theme Generator
+            Next Material UI Theme Generator (beta)
           </Typography>
           <Button variant="raised" color="secondary" onClick={() => handleOpenDialog()}>
             Generate

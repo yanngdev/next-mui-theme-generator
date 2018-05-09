@@ -1,7 +1,8 @@
 import React from 'react';
 import { Grid } from 'material-ui';
+import { MuiThemeProvider } from 'material-ui/styles';
 
-function Layout({ children, classes, topbar, sidebar }) {
+function Layout({ children, classes, theme, topbar, sidebar }) {
   return (
     <div>
       {topbar}
@@ -11,7 +12,9 @@ function Layout({ children, classes, topbar, sidebar }) {
             {sidebar}
           </Grid>
           <Grid item sm={8}>
-            {children}
+            <MuiThemeProvider theme={theme}>
+              {children}
+            </MuiThemeProvider>
           </Grid>
         </Grid>
       </div>
