@@ -8,11 +8,13 @@ import {
   AppBar,
   Toolbar,
   IconButton,
+  Grid,
 } from 'material-ui';
 import {
   ContentCopy as ContentCopyIcon,
   Check as CheckIcon,
   Close as CloseIcon,
+  SentimentVeryDissatisfied as SentimentVeryDissatisfiedIcon,
 } from '@material-ui/icons';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
@@ -25,6 +27,9 @@ const styles = theme => ({
   },
   rightButton: {
     marginLeft: theme.spacing.unit,
+  },
+  messageContainer: {
+    height: '100%',
   },
 });
 
@@ -72,9 +77,22 @@ class GenerateDialog extends React.Component {
           </Toolbar>
         </AppBar>
         <DialogContent>
-          <pre>
-            {content}
-          </pre>
+          {content ? (
+            <pre>
+              {content}
+            </pre>
+          ) : (
+            <Grid container alignItems="center" justify="center" className={classes.messageContainer}>
+              <Grid item>
+                <Typography variant="body1" align="center">
+                  <SentimentVeryDissatisfiedIcon />
+                </Typography>
+                <Typography variant="body1" align="center">
+                  Nothing to generate.
+                </Typography>
+              </Grid>
+            </Grid>
+          )}
         </DialogContent>
       </Dialog>
     );

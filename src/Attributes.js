@@ -5,13 +5,23 @@ import {
   ListItemText,
   Collapse,
 } from 'material-ui';
+import { grey } from 'material-ui/colors';
 import {
 	ExpandLess as ExpandLessIcon,
-	ExpandMore as ExpandMoreIcon,
+  ExpandMore as ExpandMoreIcon,
+  SubdirectoryArrowRight as SubDirectoryArrowRightIcon,
 } from '@material-ui/icons';
+import { withStyles } from 'material-ui/styles';
 import get from 'get-value';
 
 import Attribute from './Attribute';
+
+const styles = theme => ({
+  subAttributesLabel: {
+    display: 'flex',
+    alignItems: 'flex-end',
+  },
+});
 
 class Attributes extends React.Component {
   state = {
@@ -62,17 +72,24 @@ class Attributes extends React.Component {
   }
 
   render () {
-    const { label } = this.props;
+    const { classes, theme, label, keys } = this.props;
     const { open } = this.state;
 
     return (
       <div>
         <ListItem button onClick={this.handleToggle}>
-          <ListItemText primary={label} />
+          <ListItemText
+            primary={
+              <div className={classes.subAttributesLabel} style={{ paddingLeft: (keys.length - 1) * (theme.spacing.unit * 2) }}>
+                {keys.length > 1 && <SubDirectoryArrowRightIcon style={{ color: grey[400] }} />}
+                <span>{label}</span>
+              </div>
+            }
+          />
           {open ? <ExpandLessIcon /> : <ExpandMoreIcon />}
         </ListItem>
         <Collapse in={open} timeout="auto" unmountOnExit>
-          <List dense disablePadding={true}>
+          <List dense disablePadding>
             {this.renderSubAttributes()}
           </List>
         </Collapse>
@@ -81,4 +98,4 @@ class Attributes extends React.Component {
   }
 }
 
-export default Attributes;
+export default withStyles(styles, { withTheme : true })(Attributes);

@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames'
 import {
 	TextField,
 	ListItem,
@@ -16,9 +17,17 @@ import {
 import { withStyles } from 'material-ui/styles';
 import { ChromePicker } from 'react-color';
 
+import { isHexColor, isRgbaColor } from './utils';
+
 const styles = theme => ({
 	colorPickerContainer: {
 		justifyContent: 'center',
+	},
+	attributeLabel: {
+		backgroundColor: theme.palette.grey[100],
+	},
+	attributeEditor: {
+		backgroundColor: theme.palette.grey[200],
 	},
 });
 
@@ -61,26 +70,19 @@ class Attribute extends React.Component  {
 		const { value : oldColor } = this.props;
 		let newColor = null;
 
-		if (this.isHexColor(oldColor)) {
+		if (isHexColor(oldColor)) {
 			newColor = color.hex;
-		} else if (this.isRgbaColor(oldColor)) {
+		} else if (isRgbaColor(oldColor)) {
 			newColor = `rgba(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b}, ${color.rgb.a})`;
 		}
 
 		this.handleUpdateValue(newColor);
 	}
 
-	isHexColor = (value) => {
-		return value.match(/^#([0-9a-f]{3}){1,2}$/i);
-	}
-
-	isRgbaColor = (value) => {
-		return value.match(/^rgba\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3}),\s*(\d*(?:\.\d+)?)\)$/);
-	}
-
 	render() {
 		const {
 			classes,
+			theme,
 			key_,
 			value,
 			overwriteValue,
@@ -90,10 +92,10 @@ class Attribute extends React.Component  {
 		const type = typeof value;
 	
 		if (type === 'string') {
-			if(this.isHexColor(value) || this.isRgbaColor(value)) {
+			if(isHexColor(value) || isRgbaColor(value)) {
 				return (
 					<div>
-						<ListItem>
+						<ListItem className={classes.attributeLabel}>
 							<Avatar style={{ backgroundColor: value }} onClick={this.handleOpenEditor} />
 							<ListItemText primary={key_} secondary={value} />
 							{overwriteValue && (
@@ -106,7 +108,7 @@ class Attribute extends React.Component  {
 							</IconButton>
 						</ListItem>
 						<Collapse in={openEditor} timeout="auto" unmountOnExit>
-							<ListItem className={classes.colorPickerContainer}>
+							<ListItem className={classNames(classes.attributeEditor, classes.colorPickerContainer)}>
 								<ChromePicker
 									color={value}
 									onChangeComplete={color => this.handleColorPickerChangeComplete(color)}
@@ -118,7 +120,7 @@ class Attribute extends React.Component  {
 			} else {
 				return (
 					<div>
-						<ListItem>
+						<ListItem className={classes.attributeLabel}>
 							<ListItemText primary={key_} secondary={value} />
 							{overwriteValue && (
 								<IconButton onClick={this.handleDelete}>
@@ -130,7 +132,7 @@ class Attribute extends React.Component  {
 							</IconButton>
 						</ListItem>
 						<Collapse in={openEditor} timeout="auto" unmountOnExit>
-							<ListItem>
+							<ListItem className={classes.attributeEditor}>
 								<TextField
 									label={key_}
 									defaultValue={value}
@@ -149,7 +151,7 @@ class Attribute extends React.Component  {
 		if (type === 'number') {
 			return (
 				<div>
-					<ListItem>
+					<ListItem className={classes.attributeLabel}>
 						<ListItemText primary={key_} secondary={value} />
 						{overwriteValue && (
 							<IconButton onClick={this.handleDelete}>
@@ -161,7 +163,7 @@ class Attribute extends React.Component  {
 						</IconButton>
 					</ListItem>
 					<Collapse in={openEditor} timeout="auto" unmountOnExit>
-						<ListItem>
+						<ListItem className={classes.attributeEditor}>
 							<TextField
 								label={key_}
 								defaultValue={value}

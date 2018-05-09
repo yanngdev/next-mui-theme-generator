@@ -11,6 +11,7 @@ import Topbar from './Topbar';
 import Sidebar from './Sidebar';
 import Content from './Content';
 import GenerateDialog from './GenerateDialog';
+import { cleanObject } from './utils';
 
 const defaultTheme = createMuiTheme();
 
@@ -25,19 +26,6 @@ class App extends Component {
     super(props);
     console.log(defaultTheme);
   }
-
-  cleanObject = (obj) => {
-    Object.keys(obj).forEach(k => {
-      if (typeof obj[k] === 'object' && obj[k].constructor === Object) {
-        if (Object.keys(obj[k]).length === 0) {
-          delete obj[k];
-        } else {
-          this.cleanObject(obj[k]);
-        }
-      }
-    });
-    return obj;
-  };
 
   updateTheme = (overwrite) => {
     try {
@@ -91,10 +79,13 @@ class App extends Component {
       handleUpdateOverwrite={this.handleUpdateOverwrite}
     />;
 
-    const generatedTheme = stringifyObject(this.cleanObject(overwrite), {
+    const generatedThemeObject = cleanObject(overwrite);
+    const generatedTheme = Object.keys(generatedThemeObject).length > 0 ? stringifyObject(generatedThemeObject, {
       indent: '  ',
       singleQuotes: false
-    });
+    }) : null;
+    
+    if (generatedThemeObject)Object;
 
     return (
       <div>

@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@material-ui/icons": "^1.0.0-beta.43",
+    "classnames": "^2.2.5",
     "deepmerge": "^2.1.0",
     "get-value": "^3.0.1",
     "material-ui": "^1.0.0-beta.45",

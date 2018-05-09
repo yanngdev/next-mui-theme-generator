@@ -5,14 +5,16 @@ function Layout({ children, classes, topbar, sidebar }) {
   return (
     <div>
       {topbar}
-      <Grid container>
-        <Grid item sm={4}>
-          {sidebar}
+      <div style={{ padding: 8 }}>
+        <Grid container spacing={16}>
+          <Grid item sm={4}>
+            {sidebar}
+          </Grid>
+          <Grid item sm={8}>
+            {children}
+          </Grid>
         </Grid>
-        <Grid item sm={8}>
-          {children}
-        </Grid>
-      </Grid>
+      </div>
     </div>
   );
 }
