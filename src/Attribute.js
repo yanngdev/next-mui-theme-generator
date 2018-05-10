@@ -16,7 +16,7 @@ import {
 import { withStyles } from 'material-ui/styles';
 import { ChromePicker } from 'react-color';
 
-import { isHexColor, isRgbaColor } from './utils';
+import { isHexColor, isRgbaColor, isNumber } from './utils';
 
 const styles = theme => ({
 	avatar: {
@@ -131,16 +131,20 @@ class Attribute extends React.Component  {
 							)}
 						</ListItem>
 						<Collapse in={openEditor} timeout="auto" unmountOnExit>
-							<ListItem component="div" className={classes.attributeEditor}>
-								<TextField
-									label={key_}
-									defaultValue={value}
-									fullWidth
-									onChange={e => this.handleUpdateNewValue(e.target.value)}
-								/>
-								<IconButton onClick={() => this.handleUpdateValue(newValue)}>
-									<CheckIcon />
-								</IconButton>
+							<ListItem component="div" className={classes.attributeEditor}>`
+								<ListItemText disableTypography>
+									<TextField
+										label={key_}
+										defaultValue={value || ''}
+										fullWidth
+										onChange={e => this.handleUpdateNewValue(e.target.value)}
+									/>
+								</ListItemText>
+								<ListItemSecondaryAction>
+									<IconButton onClick={() => this.handleUpdateValue(newValue)}>
+										<CheckIcon />
+									</IconButton>
+								</ListItemSecondaryAction>
 							</ListItem>
 						</Collapse>
 					</div>
@@ -162,16 +166,20 @@ class Attribute extends React.Component  {
 					</ListItem>
 					<Collapse in={openEditor} timeout="auto" unmountOnExit>
 						<ListItem component="div" className={classes.attributeEditor}>
-							<TextField
-								label={key_}
-								defaultValue={value}
-								type="number"
-								fullWidth
-								onChange={e => this.handleUpdateNewValue(parseInt(e.target.value, 10))}
-							/>
-							<IconButton onClick={() => this.handleUpdateValue(newValue)}>
-								<CheckIcon />
-							</IconButton>
+							<ListItemText disableTypography>
+								<TextField
+									label={key_}
+									defaultValue={value}
+									type="number"
+									fullWidth
+									onChange={e => isNumber(e.target.value) && this.handleUpdateNewValue(parseInt(e.target.value, 10))}
+								/>
+							</ListItemText>
+							<ListItemSecondaryAction>
+								<IconButton onClick={() => this.handleUpdateValue(newValue)}>
+									<CheckIcon />
+								</IconButton>
+							</ListItemSecondaryAction>
 						</ListItem>
 					</Collapse>
 				</div>

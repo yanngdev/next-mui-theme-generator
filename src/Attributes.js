@@ -94,7 +94,10 @@ class Attributes extends React.Component {
         >
           <ListItemText
             primary={
-              <div className={classes.subAttributesLabel} style={{ paddingLeft: (keys.length - 1) * (theme.spacing.unit * 2) }}>
+              <div
+                className={classes.subAttributesLabel}
+                style={{ paddingLeft: keys.length > 1 ? (keys.length - 2) * (theme.spacing.unit * 2) : 0 }}
+              >
                 {keys.length > 1 && <SubAttributesIcon />}
                 <span>{label}</span>
               </div>

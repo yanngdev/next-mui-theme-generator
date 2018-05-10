@@ -11,10 +11,14 @@ export function cleanObject(obj) {
   return obj;
 };
 
-export function isHexColor(value) {
-  return value.match(/^#([0-9a-f]{3}){1,2}$/i);
+export function isHexColor(str) {
+  return str.match(/^#([0-9a-f]{3}){1,2}$/i);
 }
 
-export function isRgbaColor(value) {
-  return value.match(/^rgba\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3}),\s*(\d*(?:\.\d+)?)\)$/);
+export function isRgbaColor(str) {
+  return str.match(/^rgba\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3}),\s*(\d*(?:\.\d+)?)\)$/);
+}
+
+export function isNumber(str) {
+  return str.match(/^\d+$/);
 }
