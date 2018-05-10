@@ -4,9 +4,12 @@ import {
   Toolbar,
   Typography,
   Button,
+  IconButton
 } from 'material-ui';
 import { withStyles } from 'material-ui/styles';
 import { FileDownload as FileDownloadIcon } from '@material-ui/icons';
+import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import { faGithub } from '@fortawesome/fontawesome-free-brands';
 
 const styles = theme => ({
   flex: {
@@ -14,7 +17,10 @@ const styles = theme => ({
   },
   rightIcon: {
     marginLeft: theme.spacing.unit,
-  }
+  },
+  rightButton: {
+    marginLeft: theme.spacing.unit,
+  },
 });
 
 class Topbar extends React.Component {
@@ -27,9 +33,22 @@ class Topbar extends React.Component {
           <Typography variant="title" color="inherit" className={classes.flex}>
             Next Material UI Theme Generator (beta)
           </Typography>
-          <Button variant="raised" color="secondary" onClick={() => handleOpenDialog()}>
+          <IconButton
+            href="https://github.com/yanngdev/next-mui-theme-generator"
+            target="_blank"
+            rel="noopener"
+            color="inherit"
+          >
+            <FontAwesomeIcon icon={faGithub} />
+          </IconButton>
+          <Button
+            variant="raised"
+            color="secondary"
+            onClick={() => handleOpenDialog()}
+            className={classes.rightButton}
+          >
             Generate
-            <FileDownloadIcon className={classes.rightIcon}/>
+            <FileDownloadIcon className={classes.rightIcon} />
           </Button>
         </Toolbar>
       </AppBar>

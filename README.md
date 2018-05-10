@@ -11,4 +11,5 @@
 - Reset
 - Saves
 - Import
+- Filter components shown for easier tweaking
 - (long term) Dynamically add CSS properties to component overrides classes
