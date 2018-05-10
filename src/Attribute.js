@@ -4,14 +4,13 @@ import {
 	TextField,
 	ListItem,
 	ListItemText,
+	ListItemSecondaryAction,
 	Collapse,
 	Avatar,
 	IconButton,
 } from 'material-ui';
 import {
-	Edit as EditIcon,
 	Delete as DeleteIcon,
-	Clear as ClearIcon,
 	Check as CheckIcon,
 } from '@material-ui/icons';
 import { withStyles } from 'material-ui/styles';
@@ -20,6 +19,9 @@ import { ChromePicker } from 'react-color';
 import { isHexColor, isRgbaColor } from './utils';
 
 const styles = theme => ({
+	avatar: {
+		border: `1px solid ${theme.palette.divider}`,
+	},
 	colorPickerContainer: {
 		justifyContent: 'center',
 	},
@@ -82,7 +84,6 @@ class Attribute extends React.Component  {
 	render() {
 		const {
 			classes,
-			theme,
 			key_,
 			value,
 			overwriteValue,
@@ -95,20 +96,19 @@ class Attribute extends React.Component  {
 			if(isHexColor(value) || isRgbaColor(value)) {
 				return (
 					<div>
-						<ListItem className={classes.attributeLabel}>
-							<Avatar style={{ backgroundColor: value }} onClick={this.handleOpenEditor} />
+						<ListItem component="div" className={classes.attributeLabel} button onClick={this.handleOpenEditor}>
+							<Avatar className={classes.avatar} style={{ backgroundColor: value }} />
 							<ListItemText primary={key_} secondary={value} />
 							{overwriteValue && (
-								<IconButton onClick={this.handleDelete}>
-									<DeleteIcon />
-								</IconButton>
+								<ListItemSecondaryAction>
+									<IconButton onClick={this.handleDelete}>
+										<DeleteIcon />
+									</IconButton>
+								</ListItemSecondaryAction>
 							)}
-							<IconButton onClick={this.handleOpenEditor}>
-								{openEditor ? <ClearIcon /> : <EditIcon />}
-							</IconButton>
 						</ListItem>
 						<Collapse in={openEditor} timeout="auto" unmountOnExit>
-							<ListItem className={classNames(classes.attributeEditor, classes.colorPickerContainer)}>
+							<ListItem component="div" className={classNames(classes.attributeEditor, classes.colorPickerContainer)}>
 								<ChromePicker
 									color={value}
 									onChangeComplete={color => this.handleColorPickerChangeComplete(color)}
@@ -120,19 +120,18 @@ class Attribute extends React.Component  {
 			} else {
 				return (
 					<div>
-						<ListItem className={classes.attributeLabel}>
+						<ListItem component="div" className={classes.attributeLabel} button onClick={this.handleOpenEditor}>
 							<ListItemText primary={key_} secondary={value} />
 							{overwriteValue && (
-								<IconButton onClick={this.handleDelete}>
-									<DeleteIcon />
-								</IconButton>
+								<ListItemSecondaryAction>
+									<IconButton onClick={this.handleDelete}>
+										<DeleteIcon />
+									</IconButton>
+								</ListItemSecondaryAction>
 							)}
-							<IconButton onClick={this.handleOpenEditor}>
-								{openEditor ? <ClearIcon /> : <EditIcon />}
-							</IconButton>
 						</ListItem>
 						<Collapse in={openEditor} timeout="auto" unmountOnExit>
-							<ListItem className={classes.attributeEditor}>
+							<ListItem component="div" className={classes.attributeEditor}>
 								<TextField
 									label={key_}
 									defaultValue={value}
@@ -151,19 +150,18 @@ class Attribute extends React.Component  {
 		if (type === 'number') {
 			return (
 				<div>
-					<ListItem className={classes.attributeLabel}>
+					<ListItem component="div" className={classes.attributeLabel} button onClick={this.handleOpenEditor}>
 						<ListItemText primary={key_} secondary={value} />
 						{overwriteValue && (
-							<IconButton onClick={this.handleDelete}>
-								<DeleteIcon />
-							</IconButton>
-						)}
-						<IconButton onClick={this.handleOpenEditor}>
-							{openEditor ? <ClearIcon /> : <EditIcon />}
-						</IconButton>
+								<ListItemSecondaryAction>
+									<IconButton onClick={this.handleDelete}>
+										<DeleteIcon />
+									</IconButton>
+								</ListItemSecondaryAction>
+							)}
 					</ListItem>
 					<Collapse in={openEditor} timeout="auto" unmountOnExit>
-						<ListItem className={classes.attributeEditor}>
+						<ListItem component="div" className={classes.attributeEditor}>
 							<TextField
 								label={key_}
 								defaultValue={value}

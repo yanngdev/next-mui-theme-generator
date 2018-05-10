@@ -2,9 +2,12 @@ import React, { Component } from 'react';
 import { createMuiTheme, MuiThemeProvider } from 'material-ui/styles';
 import { CssBaseline } from 'material-ui';
 import set from 'set-value';
+import get from 'get-value';
 import unset from 'unset-value';
 import merge from 'deepmerge';
 import stringifyObject from 'stringify-object';
+import { styles as ButtonStyles } from 'material-ui/Button/Button';
+import { styles as CardStyles } from 'material-ui/Card/Card';
 
 import Layout from './Layout';
 import Topbar from './Topbar';
@@ -51,8 +54,6 @@ class App extends Component {
     } else {
       unset(overwrite, path);
     }
-
-    console.log(overwrite);
     
     this.setState({ overwrite });
     this.updateTheme(overwrite);
@@ -72,19 +73,43 @@ class App extends Component {
     const topbar = <Topbar
       handleOpenDialog={this.handleOpenDialog}
     />;
-
+    const { palette, zIndex } = theme;
+    const attributesList = [
+      {
+        label: 'Palette',
+        defaultValues: palette,
+        overwriteValues: overwrite.palette,
+        baseKey: 'palette'
+      },
+      {
+        label: 'z-index',
+        defaultValues: zIndex,
+        overwriteValues: overwrite.zIndex,
+        baseKey: 'zIndex'
+      },
+      {
+        label: 'Button',
+        defaultValues: ButtonStyles(theme),
+        overwriteValues: get(overwrite, 'overrides.MuiButton'),
+        baseKey: 'overrides.MuiButton'
+      },
+      {
+        label: 'Card',
+        defaultValues: CardStyles,
+        overwriteValues: get(overwrite, 'overrides.MuiCard'),
+        baseKey: 'overrides.MuiCard'
+      },
+    ];
     const sidebar = <Sidebar
       theme={theme}
       overwrite={overwrite}
       handleUpdateOverwrite={this.handleUpdateOverwrite}
+      attributesList={attributesList}
     />;
-
     const generatedThemeObject = cleanObject(overwrite);
     const generatedTheme = Object.keys(generatedThemeObject).length > 0 ? stringifyObject(generatedThemeObject, {
       singleQuotes: false
     }) : null;
-    
-    if (generatedThemeObject)Object;
 
     return (
       <div>

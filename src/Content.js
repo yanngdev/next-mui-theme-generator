@@ -18,8 +18,8 @@ const componentsList = [
 function Content() {
   return (
     <Grid container spacing={8}>
-      {componentsList.map(Component => (
-        <Grid item xs={12}>
+      {componentsList.map(Component=> (
+        <Grid item xs={12} key={`component-${Component.displayName}`}>
           <Component />
         </Grid>
       ))}

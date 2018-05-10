@@ -1,15 +1,16 @@
 import React from 'react';
+import classNames from 'classnames';
 import {
   List,
   ListItem,
   ListItemText,
   Collapse,
 } from 'material-ui';
-import { grey } from 'material-ui/colors';
 import {
 	ExpandLess as ExpandLessIcon,
   ExpandMore as ExpandMoreIcon,
-  SubdirectoryArrowRight as SubDirectoryArrowRightIcon,
+  ArrowDropDown as ArrowDropDownIcon,
+  ArrowDropUp as ArrowDropUpIcon,
 } from '@material-ui/icons';
 import { withStyles } from 'material-ui/styles';
 import get from 'get-value';
@@ -19,7 +20,13 @@ import Attribute from './Attribute';
 const styles = theme => ({
   subAttributesLabel: {
     display: 'flex',
-    alignItems: 'flex-end',
+    alignItems: 'center',
+  },
+  collapse: {
+    borderBottom: '1px solid transparent',
+  },
+  collapseOpen: {
+    borderBottom: `1px solid ${theme.palette.divider}`,
   },
 });
 
@@ -75,21 +82,36 @@ class Attributes extends React.Component {
     const { classes, theme, label, keys } = this.props;
     const { open } = this.state;
 
+    const CollapseIcon = open ? ExpandLessIcon : ExpandMoreIcon;
+    const SubAttributesIcon = open ? ArrowDropUpIcon : ArrowDropDownIcon;
+
     return (
       <div>
-        <ListItem button onClick={this.handleToggle} divider={keys.length === 1}>
+        <ListItem
+          component="div" 
+          button
+          onClick={this.handleToggle} divider={keys.length === 1}
+        >
           <ListItemText
             primary={
               <div className={classes.subAttributesLabel} style={{ paddingLeft: (keys.length - 1) * (theme.spacing.unit * 2) }}>
-                {keys.length > 1 && <SubDirectoryArrowRightIcon style={{ color: grey[400] }} />}
+                {keys.length > 1 && <SubAttributesIcon />}
                 <span>{label}</span>
               </div>
             }
           />
-          {open ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+          {keys.length === 1 && <CollapseIcon />}
         </ListItem>
-        <Collapse in={open} timeout="auto" unmountOnExit>
-          <List dense disablePadding>
+        <Collapse
+          in={open}
+          timeout="auto"
+          unmountOnExit
+          className={classNames({
+            [classes.collapse]: keys.length > 1,
+            [classes.collapseOpen]: open })
+          }
+        >
+          <List component="div" dense disablePadding>
             {this.renderSubAttributes()}
           </List>
         </Collapse>
