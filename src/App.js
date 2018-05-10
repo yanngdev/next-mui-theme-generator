@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { createMuiTheme, MuiThemeProvider } from 'material-ui/styles';
 import { CssBaseline } from 'material-ui';
-import set from 'set-value';
-import get from 'get-value';
 import unset from 'unset-value';
 import merge from 'deepmerge';
-import stringifyObject from 'stringify-object';
 import { styles as ButtonStyles } from 'material-ui/Button/Button';
 import { styles as CardStyles } from 'material-ui/Card/Card';
 
+import set from './vendor/set-value';
+import get from './vendor/get-value';
+import stringifyObject from './vendor/stringify-object';
 import Layout from './Layout';
 import Topbar from './Topbar';
 import Sidebar from './Sidebar';

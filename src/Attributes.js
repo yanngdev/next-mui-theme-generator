@@ -13,8 +13,8 @@ import {
   ArrowDropUp as ArrowDropUpIcon,
 } from '@material-ui/icons';
 import { withStyles } from 'material-ui/styles';
-import get from 'get-value';
 
+import get from './vendor/get-value';
 import Attribute from './Attribute';
 
 const styles = theme => ({
