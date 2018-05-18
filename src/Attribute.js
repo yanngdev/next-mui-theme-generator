@@ -8,15 +8,15 @@ import {
 	Collapse,
 	Avatar,
 	IconButton,
-} from 'material-ui';
+} from '@material-ui/core';
 import {
 	Delete as DeleteIcon,
 	Check as CheckIcon,
 } from '@material-ui/icons';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 import { ChromePicker } from 'react-color';
 
-import { isHexColor, isRgbaColor, isNumber } from './utils';
+import { isHexColor, isRgbaColor, isRgbColor, isNumber } from './utils';
 
 const styles = theme => ({
 	avatar: {
@@ -76,6 +76,8 @@ class Attribute extends React.Component  {
 			newColor = color.hex;
 		} else if (isRgbaColor(oldColor)) {
 			newColor = `rgba(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b}, ${color.rgb.a})`;
+		} else if (isRgbColor(oldColor)) {
+			newColor = `rgb(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b})`;
 		}
 
 		this.handleUpdateValue(newColor);
@@ -93,7 +95,7 @@ class Attribute extends React.Component  {
 		const type = typeof value;
 	
 		if (type === 'string') {
-			if(isHexColor(value) || isRgbaColor(value)) {
+			if(isHexColor(value) || isRgbaColor(value) || isRgbColor(value)) {
 				return (
 					<div>
 						<ListItem component="div" className={classes.attributeLabel} button onClick={this.handleOpenEditor}>
@@ -131,7 +133,7 @@ class Attribute extends React.Component  {
 							)}
 						</ListItem>
 						<Collapse in={openEditor} timeout="auto" unmountOnExit>
-							<ListItem component="div" className={classes.attributeEditor}>`
+							<ListItem component="div" className={classes.attributeEditor}>
 								<ListItemText disableTypography>
 									<TextField
 										label={key_}

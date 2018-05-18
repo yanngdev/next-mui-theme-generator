@@ -5,8 +5,8 @@ import {
   Typography,
   Button,
   IconButton
-} from 'material-ui';
-import { withStyles } from 'material-ui/styles';
+} from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 import { FileDownload as FileDownloadIcon } from '@material-ui/icons';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { faGithub } from '@fortawesome/fontawesome-free-brands';

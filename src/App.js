@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { createMuiTheme, MuiThemeProvider } from 'material-ui/styles';
-import { CssBaseline } from 'material-ui';
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import { CssBaseline } from '@material-ui/core';
 import unset from 'unset-value';
 import merge from 'deepmerge';
-import { styles as ButtonStyles } from 'material-ui/Button/Button';
-import { styles as CardStyles } from 'material-ui/Card/Card';
+import { styles as ButtonStyles } from '@material-ui/core/Button/Button';
+import { styles as CardStyles } from '@material-ui/core/Card/Card';
 
 import set from './vendor/set-value';
 import get from './vendor/get-value';
@@ -33,7 +33,7 @@ class App extends Component {
   updateTheme = (overwrite) => {
     try {
       this.setState({
-        theme: createMuiTheme(merge(defaultTheme, overwrite)),
+        theme: createMuiTheme(overwrite),
       });
     } catch (e) {
       console.log('Error updating theme: ', e);
@@ -68,12 +68,12 @@ class App extends Component {
   }
 
   render() {
-    const { theme, overwrite, openDialog } = this.state;
+    const { theme: overrideTheme, overwrite, openDialog } = this.state;
 
     const topbar = <Topbar
       handleOpenDialog={this.handleOpenDialog}
     />;
-    const { palette, zIndex } = theme;
+    const { palette, zIndex } = overrideTheme;
     const attributesList = [
       {
         label: 'Palette',
@@ -89,7 +89,7 @@ class App extends Component {
       },
       {
         label: 'Button',
-        defaultValues: ButtonStyles(theme),
+        defaultValues: ButtonStyles(overrideTheme),
         overwriteValues: get(overwrite, 'overrides.MuiButton'),
         baseKey: 'overrides.MuiButton'
       },
@@ -101,7 +101,7 @@ class App extends Component {
       },
     ];
     const sidebar = <Sidebar
-      theme={theme}
+      theme={overrideTheme}
       overwrite={overwrite}
       handleUpdateOverwrite={this.handleUpdateOverwrite}
       attributesList={attributesList}
@@ -115,7 +115,7 @@ class App extends Component {
       <div>
         <CssBaseline />
         <MuiThemeProvider theme={defaultTheme}>
-          <Layout theme={theme} topbar={topbar} sidebar={sidebar}>
+          <Layout overrideTheme={overrideTheme} topbar={topbar} sidebar={sidebar}>
             <Content />
           </Layout>
           <GenerateDialog

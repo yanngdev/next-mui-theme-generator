@@ -5,14 +5,14 @@ import {
   ListItem,
   ListItemText,
   Collapse,
-} from 'material-ui';
+} from '@material-ui/core';
 import {
 	ExpandLess as ExpandLessIcon,
   ExpandMore as ExpandMoreIcon,
   ArrowDropDown as ArrowDropDownIcon,
   ArrowDropUp as ArrowDropUpIcon,
 } from '@material-ui/icons';
-import { withStyles } from 'material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 
 import get from './vendor/get-value';
 import Attribute from './Attribute';

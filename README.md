@@ -14,4 +14,6 @@
 - Import
 - Filter components shown for easier tweaking
 - Mobile non functionnal warning
+- Deal with theme types and overriding
+- Generate object only on generate action
 - (long term) Dynamically add CSS properties to component overrides classes

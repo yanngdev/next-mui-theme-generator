@@ -1,6 +1,6 @@
 import React from 'react';
 import merge from 'deepmerge';
-import { List } from 'material-ui';
+import { List } from '@material-ui/core';
 
 import Attributes from './Attributes';
 

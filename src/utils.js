@@ -19,6 +19,10 @@ export function isRgbaColor(str) {
   return str.match(/^rgba\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3}),\s*(\d*(?:\.\d+)?)\)$/);
 }
 
+export function isRgbColor(str) {
+  return str.match(/^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/);
+}
+
 export function isNumber(str) {
   return str.match(/^\d+$/);
 }

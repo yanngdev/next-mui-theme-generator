@@ -1,18 +1,24 @@
 import React from 'react';
-import { Grid } from 'material-ui';
-import { MuiThemeProvider } from 'material-ui/styles';
+import { Grid } from '@material-ui/core';
+import { MuiThemeProvider, withStyles } from '@material-ui/core/styles';
 
-function Layout({ children, classes, theme, topbar, sidebar }) {
+const styles = theme => ({
+  root: {
+    backgroundColor: theme.palette.background.default,
+  },
+});
+
+function Layout({ children, classes, overrideTheme, topbar, sidebar }) {
   return (
-    <div>
+    <div className={classes.root}>
       {topbar}
       <div style={{ padding: 8 }}>
         <Grid container spacing={16}>
           <Grid item sm={4}>
             {sidebar}
           </Grid>
-          <Grid item sm={8}>
-            <MuiThemeProvider theme={theme}>
+          <Grid item sm={8} style={{ backgroundColor: overrideTheme.palette.background.default }}>
+            <MuiThemeProvider theme={overrideTheme}>
               {children}
             </MuiThemeProvider>
           </Grid>
@@ -22,4 +28,4 @@ function Layout({ children, classes, theme, topbar, sidebar }) {
   );
 }
 
-export default Layout;
+export default withStyles(styles)(Layout);
