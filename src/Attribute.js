@@ -67,9 +67,11 @@ class Attribute extends React.Component  {
 	}
 
 	handleDelete = () => {
+		const { handleRemoveOverwrite, path } = this.props;
+
 		this.setState(
 			{ newValue: null },
-			this.handleUpdateValue
+			() => handleRemoveOverwrite(path),
 		);
 	}
 
@@ -87,7 +89,7 @@ class Attribute extends React.Component  {
 
 		this.setState(
 			{ newValue: newColor},
-			this.handleUpdateValue
+			this.handleUpdateValue,
 		);
 	}
 

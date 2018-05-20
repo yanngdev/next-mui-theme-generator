@@ -56,9 +56,9 @@ class Attributes extends React.Component {
   };
 
   handleDelete = () => {
-    const { handleUpdateOverwrite } = this.props;
+    const { handleRemoveOverwrite } = this.props;
 
-		handleUpdateOverwrite(this.generatePath(), null);
+		handleRemoveOverwrite(this.generatePath());
 	}
 
   renderSubAttributes = () => {
@@ -67,6 +67,7 @@ class Attributes extends React.Component {
       keys,
       overwrite,
       handleUpdateOverwrite,
+      handleRemoveOverwrite,
     } = this.props;
   
     return Object.keys(values).map(key => {
@@ -95,6 +96,7 @@ class Attributes extends React.Component {
           path={path}
           overwriteValue={overwriteValue}
           handleUpdateOverwrite={handleUpdateOverwrite}
+          handleRemoveOverwrite={handleRemoveOverwrite}
         />
       );
     });
@@ -154,7 +156,7 @@ class Attributes extends React.Component {
           }
         >
           {keys.length > 0 && (
-            <List component="div" disablePadding>
+            <List component="div" dense disablePadding>
               {addAttributesVariants.map(variant =>
                 <AddAttribute
                   key={`variant-${variant}`}
@@ -166,7 +168,7 @@ class Attributes extends React.Component {
               )}
             </List>
           )}
-          <List component="div" disablePadding>
+          <List component="div" dense disablePadding>
             {this.renderSubAttributes()}
           </List>
         </Collapse>

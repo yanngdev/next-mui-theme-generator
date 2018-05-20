@@ -243,7 +243,7 @@ class App extends Component {
     }
   }
 
-  handleUpdateOverwrite = (path, newValue = null) => {
+  handleUpdateOverwrite = (path, newValue) => {
     if (newValue === undefined) {
       return;
     }
@@ -251,11 +251,7 @@ class App extends Component {
     console.log('Updating', path, ':', newValue);
 
     const overwrite = { ...this.state.overwrite };
-    if (newValue !== null) {
-      _.set(overwrite, path, newValue);
-    } else {
-      _.unset(overwrite, path);
-    }
+    _.set(overwrite, path, newValue);
     this.setState({ overwrite }, this.updateTheme);
   }
 
@@ -386,6 +382,7 @@ class App extends Component {
                   <List
                     component="div"
                     key={`attributes-list-${attributesList.subheader}`}
+                    dense
                     disablePadding
                     subheader={
                       <ListSubheader component="div" className={classes.listSubHeader}>
