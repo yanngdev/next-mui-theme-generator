@@ -70,11 +70,11 @@ class AddAttribute extends React.Component {
 	}
 
   render () {
-    const { classes, variant } = this.props;
+    const { classes, className, variant } = this.props;
     const { newKey, newValue } = this.state;
 
     return (
-      <ListItem component="div" divider>
+      <ListItem component="div" className={className} divider>
         <ListItemText disableTypography className={classes.newKeyValue}>
           <TextField
             label="Key"

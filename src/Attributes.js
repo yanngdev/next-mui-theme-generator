@@ -114,11 +114,12 @@ class Attributes extends React.Component {
     const CollapseIcon = open ? ExpandLessIcon : ExpandMoreIcon;
     const SubAttributesIcon = open ? ArrowDropUpIcon : ArrowDropDownIcon;
     const overwriteValue = _.get(overwrite, this.generatePath());
+    const addAttributesVariants = ['key', 'keyValue'];
 
     return (
       <div>
         <ListItem
-          component="div" 
+          component="div"
           button
           onClick={this.handleToggle}
           divider={keys.length === 1}
@@ -152,21 +153,20 @@ class Attributes extends React.Component {
             [classes.collapseOpen]: open })
           }
         >
+          {keys.length > 0 && (
+            <List component="div" disablePadding>
+              {addAttributesVariants.map(variant =>
+                <AddAttribute
+                  key={`variant-${variant}`}
+                  variant={variant}
+                  path={this.generatePath()}
+                  handleAddOverwrite={handleAddOverwrite}
+                  className={classes.addAttribute}
+                />
+              )}
+            </List>
+          )}
           <List component="div" disablePadding>
-            {keys.length > 0 && (
-              <div className={classes.addAttribute}>
-                <AddAttribute
-                  variant="key"
-                  path={this.generatePath()}
-                  handleAddOverwrite={handleAddOverwrite}
-                />
-                <AddAttribute
-                  variant="keyValue"
-                  path={this.generatePath()}
-                  handleAddOverwrite={handleAddOverwrite}
-                />
-              </div>
-            )}
             {this.renderSubAttributes()}
           </List>
         </Collapse>

@@ -9,7 +9,9 @@ import {
   Toolbar,
   Typography,
   Button,
-  IconButton
+  IconButton,
+  ListSubheader,
+  Divider,
 } from '@material-ui/core';
 import { FileDownload as FileDownloadIcon } from '@material-ui/icons';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
@@ -213,6 +215,10 @@ const styles = theme => ({
   rightButton: {
     marginLeft: theme.spacing.unit,
   },
+  listSubHeader: {
+    backgroundColor: theme.palette.background.default,
+    borderBottom: `1px solid ${theme.palette.divider}`,
+  },
 });
 
 class App extends Component {
@@ -285,13 +291,38 @@ class App extends Component {
     const { classes } = this.props;
     const { theme: overrideTheme, overwrite, openDialog } = this.state;
 
-    const { palette, zIndex } = overrideTheme;
-    const attributesList = [
+    // Theme and MUI components styles attributes
+    const {
+      palette,
+      shadows,
+      transitions,
+      typography,
+      zIndex,
+    } = overrideTheme;
+    const baseAttributes = [
       {
-        label: 'Palette',
+        label: 'palette',
         defaultValues: palette,
         overwriteValues: overwrite.palette,
         baseKey: 'palette',
+      },
+      {
+        label: 'shadows',
+        defaultValues: shadows,
+        overwriteValues: overwrite.shadows,
+        baseKey: 'shadows',
+      },
+      {
+        label: 'transitions',
+        defaultValues: transitions,
+        overwriteValues: overwrite.transitions,
+        baseKey: 'transitions',
+      },
+      {
+        label: 'typography',
+        defaultValues: typography,
+        overwriteValues: overwrite.typography,
+        baseKey: 'typography',
       },
       {
         label: 'z-index',
@@ -299,13 +330,19 @@ class App extends Component {
         overwriteValues: overwrite.zIndex,
         baseKey: 'zIndex',
       },
-      ...muiComponents.map(muiComponent => ({
-        label: muiComponent.name,
-        defaultValues: muiComponent.withTheme ? muiComponent.styles(overrideTheme) : muiComponent.styles,
-        overwriteValues: _.get(overwrite, `overrides.Mui${muiComponent.name}`),
-        baseKey: `overrides.Mui${muiComponent.name}`,
-      })),
+    ]
+    const muiAttributes = muiComponents.map(muiComponent => ({
+      label: muiComponent.name,
+      defaultValues: muiComponent.withTheme ? muiComponent.styles(overrideTheme) : muiComponent.styles,
+      overwriteValues: _.get(overwrite, `overrides.Mui${muiComponent.name}`),
+      baseKey: `overrides.Mui${muiComponent.name}`,
+    }));
+    const attributesLists = [
+      { subheader: 'Base Theme', list: baseAttributes },
+      { subheader: 'MUI override', list: muiAttributes },
     ];
+
+    // Generate overriding theme Object
     const generatedThemeObject = cleanObject(overwrite);
     const generatedTheme = Object.keys(generatedThemeObject).length > 0
       ? stringifyObject(generatedThemeObject, { singleQuotes: false })
@@ -344,20 +381,33 @@ class App extends Component {
               </AppBar>
             }
             sidebar={
-              <List component="div" disablePadding>
-                {attributesList.map(attributes => (
-                  <Attributes
-                    key={`attributes-${attributes.label}`}
-                    label={attributes.label}
-                    values={merge(attributes.defaultValues, attributes.overwriteValues ? { ...attributes.overwriteValues } : {})}
-                    keys={[attributes.baseKey]}
-                    overwrite={overwrite}
-                    handleUpdateOverwrite={this.handleUpdateOverwrite}
-                    handleAddOverwrite={this.handleAddOverwrite}
-                    handleRemoveOverwrite={this.handleRemoveOverwrite}
-                  />
-                ))}          
-              </List>
+              <div>
+                {attributesLists.map(attributesList => (
+                  <List
+                    component="div"
+                    key={`attributes-list-${attributesList.subheader}`}
+                    disablePadding
+                    subheader={
+                      <ListSubheader component="div" className={classes.listSubHeader}>
+                        {attributesList.subheader}
+                      </ListSubheader>
+                    }
+                  >
+                    {attributesList.list.map(attributes => (
+                      <Attributes
+                        key={`attributes-${attributes.label}`}
+                        label={attributes.label}
+                        values={merge(attributes.defaultValues, attributes.overwriteValues ? { ...attributes.overwriteValues } : {})}
+                        keys={[attributes.baseKey]}
+                        overwrite={overwrite}
+                        handleUpdateOverwrite={this.handleUpdateOverwrite}
+                        handleAddOverwrite={this.handleAddOverwrite}
+                        handleRemoveOverwrite={this.handleRemoveOverwrite}
+                      />
+                    ))}          
+                  </List>
+                ))}
+              </div>
             }
           >
             <MuiThemeProvider theme={overrideTheme}>

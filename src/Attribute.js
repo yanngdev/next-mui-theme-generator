@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames'
 import {
+	List,
 	TextField,
 	ListItem,
 	ListItemText,
@@ -117,7 +118,7 @@ class Attribute extends React.Component  {
 							)}
 						</ListItem>
 						<Collapse in={openEditor} timeout="auto" unmountOnExit>
-							<ListItem component="div" className={classNames(classes.attributeEditor, classes.colorPickerContainer)}>
+							<ListItem className={classNames(classes.attributeEditor, classes.colorPickerContainer)}>
 								<ChromePicker
 									color={value}
 									onChangeComplete={this.handleColorPickerChangeComplete}
@@ -140,7 +141,7 @@ class Attribute extends React.Component  {
 							)}
 						</ListItem>
 						<Collapse in={openEditor} timeout="auto" unmountOnExit>
-							<ListItem component="div" className={classes.attributeEditor}>
+							<ListItem className={classes.attributeEditor}>
 								<ListItemText disableTypography>
 									<TextField
 										label={key_}
@@ -174,7 +175,7 @@ class Attribute extends React.Component  {
 							)}
 					</ListItem>
 					<Collapse in={openEditor} timeout="auto" unmountOnExit>
-						<ListItem component="div" className={classes.attributeEditor}>
+						<ListItem className={classes.attributeEditor}>
 							<ListItemText disableTypography>
 								<TextField
 									label={key_}
