@@ -42,6 +42,10 @@ class GenerateDialog extends React.Component {
     this.setState({ copied: false });
   }
 
+  handleCopy = () => {
+    this.setState({ copied: true });
+  }
+
   render() {
     const { classes, open, handleCopy, handleClose, content } = this.props;
     const { copied } = this.state;
@@ -58,7 +62,7 @@ class GenerateDialog extends React.Component {
             <Typography variant="title" color="inherit" className={classes.flex}>
               Theme Object
             </Typography>
-            <CopyToClipboard text={content} onCopy={() => this.setState({ copied: true })}>
+            <CopyToClipboard text={content} onCopy={this.handleCopy}>
               {copied ? (
                 <Button disabled variant="raised">
                   Copied !
@@ -71,7 +75,7 @@ class GenerateDialog extends React.Component {
                 </Button>
               )}
             </CopyToClipboard>
-            <IconButton color="inherit" onClick={() => handleClose()} className={classes.rightButton}>
+            <IconButton color="inherit" onClick={handleClose} className={classes.rightButton}>
               <CloseIcon />
             </IconButton>
           </Toolbar>

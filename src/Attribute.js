@@ -54,18 +54,22 @@ class Attribute extends React.Component  {
 		this.setState({ openEditor: !this.state.openEditor });
 	}
 
-	handleUpdateNewValue = (value = null) => {
-		this.setState({ newValue: value });
+	handleUpdateNewValue = calcValue => (e) => {
+		this.setState({ newValue: calcValue(e) });
 	}
 
-	handleUpdateValue = (value) => {
+	handleUpdateValue = () => {
 		const { path, handleUpdateOverwrite } = this.props;
+		const { newValue } = this.state;
 		
-		handleUpdateOverwrite(path, value);
+		handleUpdateOverwrite(path, newValue);
 	}
 
 	handleDelete = () => {
-		this.handleUpdateValue(null);
+		this.setState(
+			{ newValue: null },
+			this.handleUpdateValue
+		);
 	}
 
 	handleColorPickerChangeComplete = (color) => {
@@ -80,7 +84,10 @@ class Attribute extends React.Component  {
 			newColor = `rgb(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b})`;
 		}
 
-		this.handleUpdateValue(newColor);
+		this.setState(
+			{ newValue: newColor},
+			this.handleUpdateValue
+		);
 	}
 
 	render() {
@@ -90,7 +97,7 @@ class Attribute extends React.Component  {
 			value,
 			overwriteValue,
 		} = this.props;
-		const { openEditor, newValue } = this.state;
+		const { openEditor } = this.state;
 
 		const type = typeof value;
 	
@@ -113,7 +120,7 @@ class Attribute extends React.Component  {
 							<ListItem component="div" className={classNames(classes.attributeEditor, classes.colorPickerContainer)}>
 								<ChromePicker
 									color={value}
-									onChangeComplete={color => this.handleColorPickerChangeComplete(color)}
+									onChangeComplete={this.handleColorPickerChangeComplete}
 								/>
 							</ListItem>
 						</Collapse>
@@ -139,11 +146,11 @@ class Attribute extends React.Component  {
 										label={key_}
 										defaultValue={value || ''}
 										fullWidth
-										onChange={e => this.handleUpdateNewValue(e.target.value)}
+										onChange={this.handleUpdateNewValue(e => e.target.value)}
 									/>
 								</ListItemText>
 								<ListItemSecondaryAction>
-									<IconButton onClick={() => this.handleUpdateValue(newValue)}>
+									<IconButton onClick={this.handleUpdateValue}>
 										<CheckIcon />
 									</IconButton>
 								</ListItemSecondaryAction>
@@ -157,8 +164,8 @@ class Attribute extends React.Component  {
 			return (
 				<div>
 					<ListItem component="div" className={classes.attributeLabel} button onClick={this.handleOpenEditor}>
-						<ListItemText primary={key_} secondary={value} />
-						{overwriteValue && (
+						<ListItemText primary={key_} secondary={value.toString()} />
+							{overwriteValue && (
 								<ListItemSecondaryAction>
 									<IconButton onClick={this.handleDelete}>
 										<DeleteIcon />
@@ -174,11 +181,11 @@ class Attribute extends React.Component  {
 									defaultValue={value}
 									type="number"
 									fullWidth
-									onChange={e => isNumber(e.target.value) && this.handleUpdateNewValue(parseInt(e.target.value, 10))}
+									onChange={this.handleUpdateNewValue(e => isNumber(e.target.value) && parseInt(e.target.value, 10))}
 								/>
 							</ListItemText>
 							<ListItemSecondaryAction>
-								<IconButton onClick={() => this.handleUpdateValue(newValue)}>
+								<IconButton onClick={this.handleUpdateValue}>
 									<CheckIcon />
 								</IconButton>
 							</ListItemSecondaryAction>

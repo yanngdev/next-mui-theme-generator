@@ -1,6 +1,6 @@
 import React from 'react';
 import { Grid } from '@material-ui/core';
-import { MuiThemeProvider, withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 
 const styles = theme => ({
   root: {
@@ -8,7 +8,7 @@ const styles = theme => ({
   },
 });
 
-function Layout({ children, classes, overrideTheme, topbar, sidebar }) {
+function Layout({ children, classes, topbar, sidebar }) {
   return (
     <div className={classes.root}>
       {topbar}
@@ -17,10 +17,8 @@ function Layout({ children, classes, overrideTheme, topbar, sidebar }) {
           <Grid item sm={4}>
             {sidebar}
           </Grid>
-          <Grid item sm={8} style={{ backgroundColor: overrideTheme.palette.background.default }}>
-            <MuiThemeProvider theme={overrideTheme}>
-              {children}
-            </MuiThemeProvider>
+          <Grid item sm={8}>
+            {children}
           </Grid>
         </Grid>
       </div>

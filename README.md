@@ -1,8 +1,8 @@
-# next-mui-theme-generator
+# next-mui-theme-generator WIP
 
 ## TODO
 - Add more Components
-- Add styles from Components
+- Add all styles from Components
 - Alert when invalid property
 - Select with predefined values for some attributes
 - Settings (ColorPicker, auto-generate light and dark from main)

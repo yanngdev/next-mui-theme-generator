@@ -4,6 +4,8 @@ import {
   List,
   ListItem,
   ListItemText,
+  ListItemSecondaryAction,
+  IconButton,
   Collapse,
 } from '@material-ui/core';
 import {
@@ -11,11 +13,13 @@ import {
   ExpandMore as ExpandMoreIcon,
   ArrowDropDown as ArrowDropDownIcon,
   ArrowDropUp as ArrowDropUpIcon,
+  Delete as DeleteIcon,
 } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
+import _ from 'lodash';
 
-import get from './vendor/get-value';
 import Attribute from './Attribute';
+import AddAttribute from './AddAttribute';
 
 const styles = theme => ({
   subAttributesLabel: {
@@ -28,16 +32,34 @@ const styles = theme => ({
   collapseOpen: {
     borderBottom: `1px solid ${theme.palette.divider}`,
   },
+  addAttribute: {
+    backgroundColor: theme.palette.grey[200],
+  },
 });
 
-class Attributes extends React.Component {
+class Attributes extends React.Component {  
   state = {
-		open: false,
-  };
+    open: false,
+  }
+
+  generatePath = (key) => {
+    const { keys } = this.props;
+
+    if (key) { 
+      return [...keys, key].join('.');
+    }
+    return keys.join('.');
+  }
 
 	handleToggle = () => {
 		this.setState({ open: !this.state.open });
   };
+
+  handleDelete = () => {
+    const { handleUpdateOverwrite } = this.props;
+
+		handleUpdateOverwrite(this.generatePath(), null);
+	}
 
   renderSubAttributes = () => {
     const {
@@ -62,8 +84,8 @@ class Attributes extends React.Component {
         );
       }
       
-      const path = [...keys, key].join('.');
-      const overwriteValue = get(overwrite, path);
+      const path = this.generatePath(key);
+      const overwriteValue = _.get(overwrite, path);
 
       return (
         <Attribute
@@ -79,18 +101,27 @@ class Attributes extends React.Component {
   }
 
   render () {
-    const { classes, theme, label, keys } = this.props;
+    const {
+      classes,
+      theme,
+      label,
+      keys,
+      handleAddOverwrite,
+      overwrite,
+    } = this.props;
     const { open } = this.state;
 
     const CollapseIcon = open ? ExpandLessIcon : ExpandMoreIcon;
     const SubAttributesIcon = open ? ArrowDropUpIcon : ArrowDropDownIcon;
+    const overwriteValue = _.get(overwrite, this.generatePath());
 
     return (
       <div>
         <ListItem
           component="div" 
           button
-          onClick={this.handleToggle} divider={keys.length === 1}
+          onClick={this.handleToggle}
+          divider={keys.length === 1}
         >
           <ListItemText
             primary={
@@ -104,6 +135,13 @@ class Attributes extends React.Component {
             }
           />
           {keys.length === 1 && <CollapseIcon />}
+          {(keys.length > 1 && overwriteValue) && (
+            <ListItemSecondaryAction>
+              <IconButton onClick={this.handleDelete}>
+                <DeleteIcon />
+              </IconButton>
+            </ListItemSecondaryAction>
+          )}
         </ListItem>
         <Collapse
           in={open}
@@ -114,7 +152,21 @@ class Attributes extends React.Component {
             [classes.collapseOpen]: open })
           }
         >
-          <List component="div" dense disablePadding>
+          <List component="div" disablePadding>
+            {keys.length > 0 && (
+              <div className={classes.addAttribute}>
+                <AddAttribute
+                  variant="key"
+                  path={this.generatePath()}
+                  handleAddOverwrite={handleAddOverwrite}
+                />
+                <AddAttribute
+                  variant="keyValue"
+                  path={this.generatePath()}
+                  handleAddOverwrite={handleAddOverwrite}
+                />
+              </div>
+            )}
             {this.renderSubAttributes()}
           </List>
         </Collapse>

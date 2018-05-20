@@ -1,5 +1,6 @@
 import React from 'react';
 import { Grid } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 
 import ButtonAppBar from './Components/ButtonAppBar';
 import FlatButtons from './Components/FlatButtons';
@@ -15,9 +16,15 @@ const componentsList = [
   SimpleCard,
 ];
 
-function Content() {
+const styles = theme => ({
+  root: {
+    backgroundColor: theme.palette.background.default,
+  },
+});
+
+function Content({ classes }) {
   return (
-    <Grid container spacing={8}>
+    <Grid container spacing={8} className={classes.root}>
       {componentsList.map(Component=> (
         <Grid item xs={12} key={`component-${Component.displayName}`}>
           <Component />
@@ -27,4 +34,4 @@ function Content() {
   );
 }
 
-export default Content;
+export default withStyles(styles)(Content);
