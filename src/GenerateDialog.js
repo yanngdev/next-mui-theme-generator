@@ -17,6 +17,7 @@ import {
   SentimentVeryDissatisfied as SentimentVeryDissatisfiedIcon,
 } from '@material-ui/icons';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import _ from 'lodash';
 
 const styles = theme => ({
   flex: {
@@ -43,7 +44,10 @@ class GenerateDialog extends React.Component {
   }
 
   handleCopy = () => {
-    this.setState({ copied: true });
+    this.setState(
+      { copied: true },
+      () => _.delay(() => this.setState({ copied: false }), 2000),
+    );
   }
 
   render() {

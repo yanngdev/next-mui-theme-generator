@@ -11,9 +11,14 @@ import {
   Button,
   IconButton,
   ListSubheader,
-  Divider,
 } from '@material-ui/core';
-import { FileDownload as FileDownloadIcon } from '@material-ui/icons';
+import {
+  FileDownload as FileDownloadIcon,
+  Save as SaveIcon,
+  Cached as CachedIcon,
+  Delete as DeleteIcon,
+  Check as CheckIcon,
+} from '@material-ui/icons';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import { faGithub } from '@fortawesome/fontawesome-free-brands';
 // Import all MUI styles from all components that can be imported
@@ -209,9 +214,6 @@ const styles = theme => ({
   flex: {
     flex: 1,
   },
-  rightIcon: {
-    marginLeft: theme.spacing.unit,
-  },
   rightButton: {
     marginLeft: theme.spacing.unit,
   },
@@ -226,14 +228,13 @@ class App extends Component {
     theme: defaultTheme,
     overwrite: {},
     openDialog: false,
+    saved: false,
+    loaded: false,
+    reseted: false,
   };
 
-  constructor(props) {
-    super(props);
-    console.log(defaultTheme);
-  }
-
   updateTheme = () => {
+    // Generate new theme with overwrite values
     const { overwrite } = this.state;
 
     try {
@@ -244,11 +245,10 @@ class App extends Component {
   }
 
   handleUpdateOverwrite = (path, newValue) => {
+    // Update value from overwrite object
     if (newValue === undefined) {
       return;
     }
-
-    console.log('Updating', path, ':', newValue);
 
     const overwrite = { ...this.state.overwrite };
     _.set(overwrite, path, newValue);
@@ -256,19 +256,17 @@ class App extends Component {
   }
 
   handleRemoveOverwrite = (path) => {
-    console.log('Removing', path);
-
+    // Remove value from overwrite object
     const overwrite = { ...this.state.overwrite };
     _.unset(overwrite, path);
     this.setState({ overwrite }, this.updateTheme);
   }
 
   handleAddOverwrite = (path, newKey, newValue) => {
+    // Add new value to overwrite object
     if (newKey  === undefined) {
       return;
     }
-
-    console.log('Adding', path, newKey, newValue);
   
     const overwrite = { ...this.state.overwrite };
     _.set(overwrite, `${path}.${newKey}`, newValue || Object.create(null));
@@ -283,9 +281,52 @@ class App extends Component {
     this.setState({ openDialog: false });
   }
 
+  handleSaveTheme = () => {
+    // Save to LocalStorage
+    const { overwrite } = this.state;
+    localStorage.setItem('theme', JSON.stringify(overwrite));
+    this.setState(
+      { saved: true },
+      () => _.delay(() => this.setState({ saved: false }), 2000)
+    );
+  }
+
+  handleResetTheme = () => {
+    // Reset and reset LocalStorage
+    localStorage.setItem('theme', JSON.stringify({}));
+    this.setState(
+      { overwrite: {}, reseted: true },
+      () => {
+        _.delay(() => this.setState({ reseted: false }), 2000);
+        this.updateTheme();
+      }
+    );
+  }
+
+  handleLoadTheme = () => {
+    // Load from LocalStorage
+    const theme = localStorage.getItem('theme');
+    if (theme) {
+      this.setState(
+        { overwrite: JSON.parse(theme), loaded: true },
+        () => {
+          _.delay(() => this.setState({ loaded: false }), 2000);
+          this.updateTheme();
+        }
+      );
+    }
+  }
+
   render() {
     const { classes } = this.props;
-    const { theme: overrideTheme, overwrite, openDialog } = this.state;
+    const {
+      theme: overrideTheme,
+      overwrite, 
+      openDialog,
+      saved,
+      loaded,
+      reseted,
+    } = this.state;
 
     // Theme and MUI components styles attributes
     const {
@@ -367,11 +408,37 @@ class App extends Component {
                   <Button
                     variant="raised"
                     color="secondary"
+                    onClick={this.handleLoadTheme}
+                    className={classes.rightButton}
+                    disabled={loaded}
+                  >
+                    {loaded ? <CheckIcon /> : <CachedIcon />}
+                  </Button>
+                  <Button
+                    variant="raised"
+                    color="secondary"
+                    onClick={this.handleResetTheme}
+                    className={classes.rightButton}
+                    disabled={reseted}
+                  >
+                    {reseted ? <CheckIcon /> : <DeleteIcon />}
+                  </Button>
+                  <Button
+                    variant="raised"
+                    color="secondary"
+                    onClick={this.handleSaveTheme}
+                    className={classes.rightButton}
+                    disabled={saved}
+                  >
+                    {saved ? <CheckIcon /> : <SaveIcon />}
+                  </Button>
+                  <Button
+                    variant="raised"
+                    color="secondary"
                     onClick={this.handleOpenDialog}
                     className={classes.rightButton}
                   >
-                    Generate
-                    <FileDownloadIcon className={classes.rightIcon} />
+                    <FileDownloadIcon />
                   </Button>
                 </Toolbar>
               </AppBar>
