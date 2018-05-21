@@ -212,6 +212,8 @@ const muiComponents = [
 
 const styles = theme => ({
   flex: {
+    display: 'flex',
+    alignItems: 'center',
     flex: 1,
   },
   rightButton: {
@@ -292,8 +294,7 @@ class App extends Component {
   }
 
   handleResetTheme = () => {
-    // Reset and reset LocalStorage
-    localStorage.setItem('theme', JSON.stringify({}));
+    // Reset overwrite object
     this.setState(
       { overwrite: {}, reseted: true },
       () => {
@@ -387,14 +388,14 @@ class App extends Component {
     ;
 
     return (
-      <div>
+      <MuiThemeProvider theme={defaultTheme}>
         <CssBaseline />
-        <MuiThemeProvider theme={defaultTheme}>
-          <Layout
-            topbar={
-              <AppBar position="static">
-                <Toolbar>
-                  <Typography variant="title" color="inherit" className={classes.flex}>
+        <Layout
+          topbar={
+            <AppBar position="static">
+              <Toolbar>
+                <div className={classes.flex}>
+                  <Typography variant="title" color="inherit">
                     Next Material UI Theme Generator (beta)
                   </Typography>
                   <IconButton
@@ -405,86 +406,90 @@ class App extends Component {
                   >
                     <FontAwesomeIcon icon={faGithub} />
                   </IconButton>
-                  <Button
-                    variant="raised"
-                    color="secondary"
-                    onClick={this.handleLoadTheme}
-                    className={classes.rightButton}
-                    disabled={loaded}
-                  >
-                    {loaded ? <CheckIcon /> : <CachedIcon />}
-                  </Button>
-                  <Button
-                    variant="raised"
-                    color="secondary"
-                    onClick={this.handleResetTheme}
-                    className={classes.rightButton}
-                    disabled={reseted}
-                  >
-                    {reseted ? <CheckIcon /> : <DeleteIcon />}
-                  </Button>
-                  <Button
-                    variant="raised"
-                    color="secondary"
-                    onClick={this.handleSaveTheme}
-                    className={classes.rightButton}
-                    disabled={saved}
-                  >
-                    {saved ? <CheckIcon /> : <SaveIcon />}
-                  </Button>
-                  <Button
-                    variant="raised"
-                    color="secondary"
-                    onClick={this.handleOpenDialog}
-                    className={classes.rightButton}
-                  >
-                    <FileDownloadIcon />
-                  </Button>
-                </Toolbar>
-              </AppBar>
-            }
-            sidebar={
-              <div>
-                {attributesLists.map(attributesList => (
-                  <List
-                    component="div"
-                    key={`attributes-list-${attributesList.subheader}`}
-                    dense
-                    disablePadding
-                    subheader={
-                      <ListSubheader component="div" className={classes.listSubHeader}>
-                        {attributesList.subheader}
-                      </ListSubheader>
-                    }
-                  >
-                    {attributesList.list.map(attributes => (
-                      <Attributes
-                        key={`attributes-${attributes.label}`}
-                        label={attributes.label}
-                        values={merge(attributes.defaultValues, attributes.overwriteValues ? { ...attributes.overwriteValues } : {})}
-                        keys={[attributes.baseKey]}
-                        overwrite={overwrite}
-                        handleUpdateOverwrite={this.handleUpdateOverwrite}
-                        handleAddOverwrite={this.handleAddOverwrite}
-                        handleRemoveOverwrite={this.handleRemoveOverwrite}
-                      />
-                    ))}          
-                  </List>
-                ))}
-              </div>
-            }
-          >
-            <MuiThemeProvider theme={overrideTheme}>
-              <Content />
-            </MuiThemeProvider>
-          </Layout>
-          <GenerateDialog
-            open={openDialog}
-            handleClose={this.handleCloseDialog}
-            content={generatedTheme}
-          />
-        </MuiThemeProvider>
-      </div>
+                </div>
+                <Button
+                  variant="raised"
+                  size="small"
+                  color="secondary"
+                  onClick={this.handleResetTheme}
+                  className={classes.rightButton}
+                  disabled={reseted}
+                >
+                  {reseted ? <CheckIcon /> : <DeleteIcon />}
+                </Button>
+                <Button
+                  variant="raised"
+                  size="small"
+                  color="secondary"
+                  onClick={this.handleLoadTheme}
+                  className={classes.rightButton}
+                  disabled={loaded}
+                >
+                  {loaded ? <CheckIcon /> : <CachedIcon />}
+                </Button>
+                <Button
+                  variant="raised"
+                  size="small"
+                  color="secondary"
+                  onClick={this.handleSaveTheme}
+                  className={classes.rightButton}
+                  disabled={saved}
+                >
+                  {saved ? <CheckIcon /> : <SaveIcon />}
+                </Button>
+                <Button
+                  variant="raised"
+                  size="small"
+                  color="secondary"
+                  onClick={this.handleOpenDialog}
+                  className={classes.rightButton}
+                >
+                  <FileDownloadIcon />
+                </Button>
+              </Toolbar>
+            </AppBar>
+          }
+          sidebar={
+            <div>
+              {attributesLists.map(attributesList => (
+                <List
+                  component="div"
+                  key={`attributes-list-${attributesList.subheader}`}
+                  dense
+                  disablePadding
+                  subheader={
+                    <ListSubheader component="div" className={classes.listSubHeader}>
+                      {attributesList.subheader}
+                    </ListSubheader>
+                  }
+                >
+                  {attributesList.list.map(attributes => (
+                    <Attributes
+                      key={`attributes-${attributes.label}`}
+                      label={attributes.label}
+                      values={merge(attributes.defaultValues, attributes.overwriteValues ? { ...attributes.overwriteValues } : {})}
+                      keys={[attributes.baseKey]}
+                      overwrite={overwrite}
+                      handleUpdateOverwrite={this.handleUpdateOverwrite}
+                      handleAddOverwrite={this.handleAddOverwrite}
+                      handleRemoveOverwrite={this.handleRemoveOverwrite}
+                    />
+                  ))}          
+                </List>
+              ))}
+            </div>
+          }
+        >
+          <MuiThemeProvider theme={overrideTheme}>
+            <Content />
+          </MuiThemeProvider>
+        </Layout>
+        <GenerateDialog
+          open={openDialog}
+          handleClose={this.handleCloseDialog}
+          content={generatedTheme}
+        />
+      </MuiThemeProvider>
     );
   }
 }
